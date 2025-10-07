@@ -91,7 +91,7 @@ class JobsSidebarState extends State<JobsSidebar> {
     }
   }
 
-  Icon _statusIcon(String s) {
+  /* Icon _statusIcon(String s) {
     switch (s) {
       case 'done':
         return Icon(
@@ -106,7 +106,7 @@ class JobsSidebarState extends State<JobsSidebar> {
       default:
         return Icon(Icons.help, color: Colors.grey, size: 12);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class JobsSidebarState extends State<JobsSidebar> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
+            /*child: Row(
               children: [
                 const Expanded(
                   child: Text(
@@ -134,12 +134,19 @@ class JobsSidebarState extends State<JobsSidebar> {
                   icon: const Icon(Icons.refresh),
                 ),
               ],
-            ),
+            ),*/
           ),
           // Create new tab
           ListTile(
-            leading: const Icon(Icons.add),
-            title: const Text('Create a new image'),
+            leading: const Icon(Icons.add_comment_outlined),
+            title: const Text(
+              'Create a new image',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
             selected: widget.selectedJobId == null,
             onTap: widget.onCreateNew,
           ),
@@ -155,7 +162,7 @@ class JobsSidebarState extends State<JobsSidebar> {
     if (_error != null) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(8),
           child: Text('Error: $_error'),
         ),
       );
@@ -205,7 +212,7 @@ class JobsSidebarState extends State<JobsSidebar> {
           ),
           trailing: IconButton(
             tooltip: 'Delete',
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.delete_forever_rounded, size: 20),
             onPressed: () => _delete(it.jobId),
           ),
           onTap: widget.onOpen == null ? null : () => widget.onOpen!(it.jobId),

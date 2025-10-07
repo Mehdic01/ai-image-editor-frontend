@@ -77,25 +77,32 @@ class _PromptComposerState extends State<PromptComposer> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final canSend = _controller.text.trim().isNotEmpty;
     return Material(
-      elevation: 1,
+      elevation: 0,
       borderRadius: BorderRadius.circular(28),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: Colors.black12),
+          border: Border.all(color: Colors.black26, width: 1),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 12,
+              offset: Offset(0, 3),
+            ),
+          ],
         ),
         child: Row(
           children: [
+            // Left circular + button without border
             CircleIconButton(
               icon: Icons.add,
               size: 36,
-              backgroundColor: theme.colorScheme.secondaryContainer,
-              iconColor: theme.colorScheme.onSecondaryContainer,
+              backgroundColor: Colors.white,
+              iconColor: Colors.black,
               tooltip: 'Upload image',
               onPressed: _pick,
             ),
@@ -116,9 +123,12 @@ class _PromptComposerState extends State<PromptComposer> {
               ),
             ),
             const SizedBox(width: 8),
+            // Right circular send button without border
             CircleIconButton(
               icon: Icons.send,
               size: 36,
+              backgroundColor: Colors.white,
+              iconColor: Colors.black,
               tooltip: 'Generate',
               onPressed: canSend ? widget.onSend : null,
             ),
