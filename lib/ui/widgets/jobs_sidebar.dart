@@ -91,16 +91,20 @@ class JobsSidebarState extends State<JobsSidebar> {
     }
   }
 
-  Color _statusColor(String s) {
+  Icon _statusIcon(String s) {
     switch (s) {
       case 'done':
-        return Colors.green;
+        return Icon(
+          Icons.check_circle,
+          color: const Color.fromARGB(255, 0, 73, 3),
+          size: 12,
+        );
       case 'error':
-        return Colors.red;
+        return Icon(Icons.error, color: Colors.red, size: 12);
       case 'processing':
-        return Colors.orange;
+        return Icon(Icons.hourglass_empty, color: Colors.orange, size: 12);
       default:
-        return Colors.grey;
+        return Icon(Icons.help, color: Colors.grey, size: 12);
     }
   }
 
@@ -109,7 +113,7 @@ class JobsSidebarState extends State<JobsSidebar> {
     return Container(
       width: 320,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.25),
+        color: Colors.white,
         border: const Border(right: BorderSide(color: Colors.black12)),
       ),
       child: Column(
@@ -139,7 +143,7 @@ class JobsSidebarState extends State<JobsSidebar> {
             selected: widget.selectedJobId == null,
             onTap: widget.onCreateNew,
           ),
-          const Divider(height: 1),
+          //const Divider(height: 1),
           if (_loading) const LinearProgressIndicator(minHeight: 2),
           Expanded(child: _buildList()),
         ],
@@ -163,9 +167,9 @@ class JobsSidebarState extends State<JobsSidebar> {
     if (items.isEmpty) {
       return const Center(child: Text('No jobs yet'));
     }
-    return ListView.separated(
+    return ListView.builder(
       itemCount: items.length,
-      separatorBuilder: (_, __) => const Divider(height: 1),
+      //separatorBuilder: (_, __) => const Divider(height: 0.1),
       itemBuilder: (context, index) {
         final it = items[index];
         final prompt =
@@ -174,20 +178,29 @@ class JobsSidebarState extends State<JobsSidebar> {
                 : it.prompt!;
         return ListTile(
           selected: it.jobId == widget.selectedJobId,
-          title: Text(prompt, maxLines: 2, overflow: TextOverflow.ellipsis),
+          title: Text(
+            prompt,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w100,
+              color: Color.fromARGB(221, 51, 51, 51),
+            ),
+          ),
           subtitle: Row(
             children: [
-              Icon(Icons.circle, size: 10, color: _statusColor(it.status)),
-              const SizedBox(width: 6),
-              Text(it.status),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  it.createdAt.toLocal().toString(),
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.black54),
-                ),
-              ),
+              //_statusIcon(it.status),
+              //const SizedBox(width: 6),
+              //Text(it.status),
+              //const SizedBox(width: 12),
+              //Flexible(
+              //child: Text(
+              //it.createdAt.toLocal().toString(),
+              //overflow: TextOverflow.ellipsis,
+              //style: const TextStyle(color: Colors.black54),
+              //),
+              //),
             ],
           ),
           trailing: IconButton(
