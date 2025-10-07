@@ -8,6 +8,7 @@ class PromptComposer extends StatefulWidget {
   final Future<void> Function(Uint8List bytes, String filename)? onPickImage;
   final VoidCallback? onSend;
   final String initialPrompt;
+  final TextEditingController? controller;
 
   const PromptComposer({
     super.key,
@@ -15,6 +16,7 @@ class PromptComposer extends StatefulWidget {
     this.onPickImage,
     this.onSend,
     this.initialPrompt = '',
+    this.controller,
   });
 
   @override
@@ -22,18 +24,42 @@ class PromptComposer extends StatefulWidget {
 }
 
 class _PromptComposerState extends State<PromptComposer> {
-  late final TextEditingController _controller;
+  late TextEditingController _controller;
+  VoidCallback? _ctrlListener;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialPrompt);
+    _controller =
+        widget.controller ?? TextEditingController(text: widget.initialPrompt);
+    _ctrlListener = () => setState(() {});
+    _controller.addListener(_ctrlListener!);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.removeListener(_ctrlListener!);
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant PromptComposer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      // move listener to new controller
+      oldWidget.controller?.removeListener(_ctrlListener!);
+      if (widget.controller != null) {
+        _controller = widget.controller!;
+      } else if (oldWidget.controller != null) {
+        // switched from external to internal; re-create internal controller
+        _controller = TextEditingController(text: widget.initialPrompt);
+      }
+      _controller.addListener(_ctrlListener!);
+      setState(() {});
+    }
   }
 
   Future<void> _pick() async {

@@ -144,6 +144,7 @@ class _HomeViewState extends State<HomeView> {
                           constraints: const BoxConstraints(maxWidth: 700),
                           child: PromptComposer(
                             initialPrompt: _prompt,
+                            controller: _promptController,
                             onPromptChanged: (v) => setState(() => _prompt = v),
                             onPickImage: (bytes, filename) async {
                               setState(() {
