@@ -1,17 +1,12 @@
 {
   "hosting": {
-    "site": "ai-image-editor-web-app",
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+    "public": "build/web",
+    "headers": [
+      { "source": "**/*.@(js|css|png|jpg|jpeg|gif|webp|svg|ico|ttf|woff|woff2)",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+      { "source": "**/*.html",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "rewrites": [{ "source": "**", "destination": "/index.html" }]
   }
 }

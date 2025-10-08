@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "ai-image-editor-web-app"
-  }
+    "default": "ai-image-editor-web-app",
+    "staging": "ai-image-editor-web-app"
+  },
+  "targets": {},
+  "etags": {}
 }
