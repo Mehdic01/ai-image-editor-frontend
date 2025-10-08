@@ -13,8 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Set up Flutter SDK
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # Install dependencies and build the Flutter Web app
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: ./frontend
+
+      - name: Build Web
+        run: flutter build web --release
+        working-directory: ./frontend
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AI_IMAGE_EDITOR_WEB_APP }}
           projectId: ai-image-editor-web-app
+          entryPoint: frontend
