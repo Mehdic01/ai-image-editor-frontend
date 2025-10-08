@@ -10,7 +10,7 @@ class BeforeAfter extends StatefulWidget {
 }
 
 class _BeforeAfterState extends State<BeforeAfter> {
-  double _ratio = 0.5;
+  double _ratio = 1;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(

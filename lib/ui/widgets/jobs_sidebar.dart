@@ -7,6 +7,7 @@ class JobsSidebar extends StatefulWidget {
   final ValueChanged<String>? onOpen;
   final String? selectedJobId;
   final VoidCallback? onCreateNew;
+  final double? width;
 
   const JobsSidebar({
     super.key,
@@ -14,6 +15,7 @@ class JobsSidebar extends StatefulWidget {
     this.onOpen,
     this.selectedJobId,
     this.onCreateNew,
+    this.width,
   });
 
   @override
@@ -111,7 +113,7 @@ class JobsSidebarState extends State<JobsSidebar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 320,
+      width: widget.width ?? 250,
       decoration: BoxDecoration(
         color: Colors.white,
         border: const Border(right: BorderSide(color: Colors.black12)),
@@ -120,35 +122,34 @@ class JobsSidebarState extends State<JobsSidebar> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            /*child: Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    'History',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                IconButton(
-                  tooltip: 'Refresh',
-                  onPressed: _refresh,
-                  icon: const Icon(Icons.refresh),
-                ),
-              ],
-            ),*/
+            child: const SizedBox.shrink(),
           ),
           // Create new tab
-          ListTile(
-            leading: const Icon(Icons.add_comment_outlined),
-            title: const Text(
-              'Create a new image',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+          ListTile(leading: Image.asset('icons/logo3.png')),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 16, 12, 6),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Chats',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w200,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: 'Start a new chat',
+                    onPressed: widget.onCreateNew,
+                    icon: Image.asset('icons/write.png', width: 20, height: 20),
+                  ),
+                ],
               ),
             ),
-            selected: widget.selectedJobId == null,
-            onTap: widget.onCreateNew,
           ),
           //const Divider(height: 1),
           if (_loading) const LinearProgressIndicator(minHeight: 2),
@@ -172,7 +173,16 @@ class JobsSidebarState extends State<JobsSidebar> {
       return const Center(child: CircularProgressIndicator());
     }
     if (items.isEmpty) {
-      return const Center(child: Text('No jobs yet'));
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "No jobs yet — tap 'Create a new image' to get started ✨",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+        ),
+      );
     }
     return ListView.builder(
       itemCount: items.length,
@@ -183,16 +193,22 @@ class JobsSidebarState extends State<JobsSidebar> {
             (it.prompt == null || it.prompt!.trim().isEmpty)
                 ? '(no prompt)'
                 : it.prompt!;
+        final promptOneLine = prompt.replaceAll(RegExp(r'\s+'), ' ').trim();
         return ListTile(
           selected: it.jobId == widget.selectedJobId,
-          title: Text(
-            prompt,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w100,
-              color: Color.fromARGB(221, 51, 51, 51),
+          title: Tooltip(
+            message: promptOneLine,
+            waitDuration: const Duration(milliseconds: 400),
+            child: Text(
+              promptOneLine,
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w100,
+                color: Color.fromARGB(221, 51, 51, 51),
+              ),
             ),
           ),
           subtitle: Row(
@@ -212,7 +228,7 @@ class JobsSidebarState extends State<JobsSidebar> {
           ),
           trailing: IconButton(
             tooltip: 'Delete',
-            icon: const Icon(Icons.delete_forever_rounded, size: 20),
+            icon: Image.asset('icons/delete.png', width: 17, height: 17),
             onPressed: () => _delete(it.jobId),
           ),
           onTap: widget.onOpen == null ? null : () => widget.onOpen!(it.jobId),

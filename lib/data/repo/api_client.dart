@@ -4,9 +4,10 @@ import 'package:http/http.dart' as http;
 
 const String apiBase = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://localhost:8000',
+  defaultValue: 'https://ai-image-editor-backend.onrender.com',
 );
 
+// bu sinifin amaci HTTP isteklerini yapmak ve JSON verilerini işlemek
 class ApiClient {
   final http.Client _c;
   ApiClient([http.Client? c]) : _c = c ?? http.Client();
