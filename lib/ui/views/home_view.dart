@@ -115,7 +115,7 @@ class _HomeViewState extends State<HomeView> {
               child: Opacity(
                 opacity: 1,
                 child: Image.asset(
-                  'icons/top.png',
+                  'assets/icons/top.png',
                   width: isNarrow ? 140 : 600,
                   fit: BoxFit.contain,
                 ),
@@ -127,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
             bottom: 0,
             child: IgnorePointer(
               child: Image.asset(
-                'icons/down.png',
+                'assets/icons/down.png',
                 width: isNarrow ? 160 : 600,
                 fit: BoxFit.fill,
               ),

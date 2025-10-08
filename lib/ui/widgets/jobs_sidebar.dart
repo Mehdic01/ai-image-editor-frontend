@@ -125,7 +125,7 @@ class JobsSidebarState extends State<JobsSidebar> {
             child: const SizedBox.shrink(),
           ),
           // Create new tab
-          ListTile(leading: Image.asset('icons/logo3.png')),
+          ListTile(leading: Image.asset('assets/icons/logo3.png')),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 16, 12, 6),
             child: Align(
@@ -145,7 +145,11 @@ class JobsSidebarState extends State<JobsSidebar> {
                   IconButton(
                     tooltip: 'Start a new chat',
                     onPressed: widget.onCreateNew,
-                    icon: Image.asset('icons/write.png', width: 20, height: 20),
+                    icon: Image.asset(
+                      'assets/icons/write.png',
+                      width: 20,
+                      height: 20,
+                    ),
                   ),
                 ],
               ),
@@ -228,7 +232,7 @@ class JobsSidebarState extends State<JobsSidebar> {
           ),
           trailing: IconButton(
             tooltip: 'Delete',
-            icon: Image.asset('icons/delete.png', width: 17, height: 17),
+            icon: Image.asset('assets/icons/delete.png', width: 17, height: 17),
             onPressed: () => _delete(it.jobId),
           ),
           onTap: widget.onOpen == null ? null : () => widget.onOpen!(it.jobId),
