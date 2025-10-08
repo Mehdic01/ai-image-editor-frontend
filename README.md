@@ -15,7 +15,7 @@ Key folders/files:
 - `lib/`
 	- `main.dart` — App entry; sets up `MaterialApp` and loads `HomeView`.
 	- `ui/views/home_view.dart` — Main screen: upload image, enter prompt, see before/after slider, download.
-	- `ui/widgets/` — Reusable UI: `JobsSidebar`, `PromptComposer`, `BeforeAfter`, `LoadingOverlay`.
+	- `ui/widgets/` — Reusable UI: `JobsSidebar`, `PromptComposer`, `BeforeAfter`, `LoadingOverlay`,...
 	- `data/repo/api_client.dart` — HTTP client. Defines `apiBase` from `API_BASE_URL`.
 	- `data/repo/jobs_repository.dart` — High-level API calls (create/list/get/delete/retry jobs).
 	- `data/entity/job.dart` — Data models (`Job`, `JobListItem`).

@@ -19,6 +19,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final _repo = JobsRepository(ApiClient());
   final _sidebarKey = GlobalKey<JobsSidebarState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   late TextEditingController _promptController;
   Uint8List? _bytes;
@@ -104,19 +105,91 @@ class _HomeViewState extends State<HomeView> {
     final contentMaxWidth = isNarrow ? size.width - 24 : 800.0;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
+      appBar:
+          isNarrow
+              ? AppBar(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                leading: IconButton(
+                  icon: const Icon(Icons.menu),
+                  tooltip: 'Open menu',
+                  onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                ),
+                title: Row(
+                  children: [
+                    Image.asset('assets/icons/fal_logo.png', height: 24),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'AI Image Editor',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                  ],
+                ),
+              )
+              : null,
+      drawer:
+          isNarrow
+              ? Drawer(
+                child: SafeArea(
+                  child: Builder(
+                    builder:
+                        (drawerContext) => JobsSidebar(
+                          key: _sidebarKey,
+                          repo: _repo,
+                          width: 304,
+                          selectedJobId: _selectedJobId,
+                          onCreateNew: () {
+                            Navigator.of(drawerContext).pop();
+                            setState(() {
+                              _selectedJobId = null;
+                              _job = null;
+                              _error = null;
+                              _bytes = null;
+                              _filename = null;
+                              _prompt = '';
+                              _promptController.text = '';
+                            });
+                          },
+                          onOpen: (id) async {
+                            Navigator.of(drawerContext).pop();
+                            setState(() {
+                              _selectedJobId = id;
+                              _job = null;
+                              _error = null;
+                              _bytes = null;
+                              _filename = null;
+                              _prompt = '';
+                              _promptController.text = '';
+                            });
+                            try {
+                              final j = await _repo.getJob(id);
+                              if (!mounted) return;
+                              setState(() => _job = j);
+                            } catch (e) {
+                              if (!mounted) return;
+                              setState(() => _error = e.toString());
+                            }
+                          },
+                        ),
+                  ),
+                ),
+              )
+              : null,
       body: Stack(
         children: [
           // Decorative corner backgrounds (light image), non-interactive
           Positioned(
-            left: 250,
+            left: isNarrow ? 0 : 250,
             top: 0,
             child: IgnorePointer(
               child: Opacity(
                 opacity: 1,
                 child: Image.asset(
                   'assets/icons/top.png',
-                  width: isNarrow ? 140 : 600,
+                  width: isNarrow ? 400 : 600,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -128,7 +201,7 @@ class _HomeViewState extends State<HomeView> {
             child: IgnorePointer(
               child: Image.asset(
                 'assets/icons/down.png',
-                width: isNarrow ? 160 : 600,
+                width: isNarrow ? 400 : 600,
                 fit: BoxFit.fill,
               ),
             ),
